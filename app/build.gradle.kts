@@ -78,6 +78,7 @@ dependencies {
 
     implementation(libs.datastore.preferences)
 
+    implementation(libs.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
