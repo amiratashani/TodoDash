@@ -6,7 +6,6 @@ import com.example.tododash.util.Constants.TODO_TABLE
 
 @Entity(tableName = TODO_TABLE)
 data class ToDoTask(
-
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title:String,
