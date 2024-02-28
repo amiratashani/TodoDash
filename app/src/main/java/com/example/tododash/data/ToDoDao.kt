@@ -14,7 +14,7 @@ interface ToDoDao  {
 
 
     @Query("SELECT * FROM todo_table ORDER BY id ASC")
-    fun getAllTask():Flow<List<ToDoTask>>
+    fun getAllTasks():Flow<List<ToDoTask>>
 
     @Query("SELECT * FROM todo_table WHERE id=:taskId ")
     fun getSelectedTask(taskId:Int):Flow<ToDoTask>
