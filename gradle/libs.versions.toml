@@ -10,8 +10,10 @@ activity-compose = "1.8.2"
 compose-bom = "2024.02.01"
 room_version = "2.6.1"
 hilt = "2.48"
+hilt_compiler = "1.0.0"
 dataStore = "1.0.0"
 nav_version = "2.7.7"
+material_google = "1.5.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -27,12 +29,14 @@ ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
-room-compiler = { group = "androidx.room", name = "room-compiler" , version.ref = "room_version" }
-room-runtime = { group = "androidx.room", name = "room-runtime" , version.ref = "room_version" }
-room-ktx = { group = "androidx.room", name = "room-ktx" , version.ref = "room_version" }
+material = { group = "androidx.compose.material", name = "material" }
+material-google = { group = "com.google.android.material", name = "material", version.ref = "material_google" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room_version" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt_compiler" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version" }
 

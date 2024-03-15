@@ -66,7 +66,8 @@ dependencies {
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
+    implementation(libs.material)
+    implementation(libs.material.google)
 
     //room
     implementation(libs.room.compiler)
@@ -75,6 +76,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    kapt(libs.hilt)
 
     implementation(libs.datastore.preferences)
 
