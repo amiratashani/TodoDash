@@ -1,12 +1,22 @@
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AppBarDefaults
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,20 +24,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tododash.R
 import com.example.tododash.component.PriorityItem
 import com.example.tododash.data.models.Priority
 import com.example.tododash.ui.theme.LARGE_PADDING
+import com.example.tododash.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.tododash.ui.theme.topAppBarBackgroundColor
 import com.example.tododash.ui.theme.topAppBarContentColor
 
 @Composable
 fun ListAppBar() {
     DefaultListAppBar(
-        {},{},{}
+        {}, {}, {}
     )
 }
 
@@ -165,10 +180,113 @@ fun SortAction(
     }
 }
 
+
+@Composable
+fun SearchAppBar(
+    text: String,
+    onTextChange: (String) -> Unit,
+    onCloseClicked: () -> Unit,
+    onSearchClicked: (String) -> Unit,
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(TOP_APP_BAR_HEIGHT),
+        elevation = AppBarDefaults.TopAppBarElevation,
+        color = MaterialTheme.colors.topAppBarBackgroundColor
+    ) {
+
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(TOP_APP_BAR_HEIGHT),
+            elevation = AppBarDefaults.TopAppBarElevation,
+            color = MaterialTheme.colors.topAppBarBackgroundColor
+        ) {
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = text,
+                onValueChange = onTextChange,
+                placeholder = {
+                    Text(
+                        text = "Search", //! transfer to strings.xml
+                        color = Color.White,
+                        modifier = Modifier
+                            .alpha(ContentAlpha.medium)
+
+                    )
+                },
+                textStyle = TextStyle(
+                    color = MaterialTheme.colors.topAppBarContentColor,
+                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                ),
+                singleLine = true,
+                leadingIcon = {
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .alpha(ContentAlpha.disabled)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Search Icon", //! transfer to strings.xml
+                            tint = MaterialTheme.colors.topAppBarContentColor
+                        )
+                    }
+                },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            if (text.isNotEmpty()) {
+                                onTextChange("")
+                            } else {
+                                onCloseClicked()
+                            }
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = "Close Icon", //! transfer to strings.xml
+                            tint = MaterialTheme.colors.topAppBarContentColor
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        onSearchClicked(text)
+                    }
+                ),
+                colors = TextFieldDefaults.textFieldColors(
+                    cursorColor = MaterialTheme.colors.topAppBarContentColor,
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    backgroundColor = Color.Transparent
+                )
+            )
+        }
+    }
+}
+
 @Composable
 @Preview
 fun DefaultListAppBarPreview() {
     DefaultListAppBar(
-        {},{},{}
+        {}, {}, {}
+    )
+}
+
+@Composable
+@Preview
+fun PreviewSearchAppBar() {
+    SearchAppBar(
+        text = "",
+        onTextChange = {},
+        onCloseClicked = {},
+        onSearchClicked = {}
     )
 }
