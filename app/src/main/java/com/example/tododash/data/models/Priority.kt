@@ -7,7 +7,7 @@ import com.example.tododash.ui.theme.LowPriorityColor
 import com.example.tododash.ui.theme.MediumPriorityColor
 import com.example.tododash.ui.theme.NonePriorityColor
 
-enum class Priority(color: Color) {
+enum class Priority(val color: Color) {
     HIGH(HighPriorityColor),
     MEDIUM(MediumPriorityColor),
     LOW(LowPriorityColor),
