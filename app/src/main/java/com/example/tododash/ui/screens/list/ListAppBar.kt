@@ -38,12 +38,45 @@ import com.example.tododash.ui.theme.LARGE_PADDING
 import com.example.tododash.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.tododash.ui.theme.topAppBarBackgroundColor
 import com.example.tododash.ui.theme.topAppBarContentColor
+import com.example.tododash.ui.viewmodels.SharedViewModel
+import com.example.tododash.util.SearchAppBarState
 
 @Composable
-fun ListAppBar() {
-    DefaultListAppBar(
-        {}, {}, {}
-    )
+fun ListAppBar(
+    sharedViewModel: SharedViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchTextState: String,
+    onSearchClicked: (SearchAppBarState) -> Unit,
+    onTextChange: (String) -> Unit
+) {
+    when (searchAppBarState) {
+        SearchAppBarState.CLOSED ->
+            DefaultListAppBar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                    onSearchClicked(SearchAppBarState.OPENED)
+                },
+                onSortClicked = {
+//                    sharedViewModel.persistSortState(it)
+                },
+                onDeleteAllConfirmed = {
+//                    sharedViewModel.action.value = Action.DELETE_ALL
+                }
+            )
+
+        else ->
+            SearchAppBar(
+                text = searchTextState,
+                onTextChange = { newText -> sharedViewModel.searchTextState.value = newText },
+                onCloseClicked = {
+                    onSearchClicked(SearchAppBarState.CLOSED)
+                    sharedViewModel.searchTextState.value = ""
+                },
+                onSearchClicked = {
+//                    sharedViewModel.searchDatabase(searchQuery = it)
+                }
+            )
+    }
 }
 
 @Composable
