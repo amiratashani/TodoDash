@@ -2,6 +2,8 @@ package com.example.tododash.ui.screens.list
 
 import ListAppBar
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -10,6 +12,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,6 +24,7 @@ import com.example.tododash.ui.viewmodels.SharedViewModel
 import com.example.tododash.util.SearchAppBarState
 
 
+@ExperimentalMaterialApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ListScreen(
@@ -27,12 +32,18 @@ fun ListScreen(
     sharedViewModel: SharedViewModel
 ) {
 
+    LaunchedEffect(key1 = true) {
+        Log.d("ListScreen", "LaunchedEffect triggered")
+        sharedViewModel.getAllTasks()
+    }
+
+    val allTasks by sharedViewModel.allTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
-    val searchTextState:String by sharedViewModel.searchTextState
+    val searchTextState: String by sharedViewModel.searchTextState
 
     Scaffold(
-        content = {},
-        topBar = { ListAppBar( sharedViewModel,searchAppBarState,searchTextState,{},{}) },
+        content = { ListContent(allTasks = allTasks, navigateToTaskScreen = navigateToTaskScreen) },
+        topBar = { ListAppBar(sharedViewModel, searchAppBarState, searchTextState, {}, {}) },
         floatingActionButton = { ListFab(navigateToTaskScreen) }
     )
 

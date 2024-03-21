@@ -88,7 +88,7 @@ fun DefaultListAppBar(
     TopAppBar(
         title = {
             Text(
-                "Tasks", //! transfer to strings.xml
+                stringResource(id = R.string.list_screen_title), //! transfer to strings.xml
                 color = MaterialTheme.colors.topAppBarContentColor
             )
         },
@@ -243,7 +243,7 @@ fun SearchAppBar(
                 onValueChange = onTextChange,
                 placeholder = {
                     Text(
-                        text = "Search", //! transfer to strings.xml
+                        text = stringResource(id = R.string.search_placeholder),
                         color = Color.White,
                         modifier = Modifier
                             .alpha(ContentAlpha.medium)

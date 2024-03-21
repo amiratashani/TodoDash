@@ -30,7 +30,7 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
     val allTasks: StateFlow<List<ToDoTask>> = _allTasks
 
 
-    private fun getAllTasks() {
+     fun getAllTasks() {
         viewModelScope.launch {
             repository.getAllTasks.collect {
                 _allTasks.value = it
