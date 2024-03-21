@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ToDoDao  {
 
-
     @Query("SELECT * FROM todo_table ORDER BY id ASC")
     fun getAllTasks():Flow<List<ToDoTask>>
 

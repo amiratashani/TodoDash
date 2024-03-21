@@ -43,7 +43,10 @@ fun ListScreen(
 
     Scaffold(
         content = { ListContent(allTasks = allTasks, navigateToTaskScreen = navigateToTaskScreen) },
-        topBar = { ListAppBar(sharedViewModel, searchAppBarState, searchTextState, {}, {}) },
+        topBar = { ListAppBar(sharedViewModel,
+            searchAppBarState,
+            searchTextState,
+            sharedViewModel::onSearchClicked, {}) },
         floatingActionButton = { ListFab(navigateToTaskScreen) }
     )
 

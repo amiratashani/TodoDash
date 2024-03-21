@@ -40,6 +40,7 @@ import com.example.tododash.ui.theme.topAppBarBackgroundColor
 import com.example.tododash.ui.theme.topAppBarContentColor
 import com.example.tododash.ui.viewmodels.SharedViewModel
 import com.example.tododash.util.SearchAppBarState
+import com.example.tododash.util.TrialingIconState
 
 @Composable
 fun ListAppBar(
@@ -221,6 +222,9 @@ fun SearchAppBar(
     onCloseClicked: () -> Unit,
     onSearchClicked: (String) -> Unit,
 ) {
+
+    var trialingIconState by remember { mutableStateOf(TrialingIconState.READY_TO_DELETE) }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -228,80 +232,83 @@ fun SearchAppBar(
         elevation = AppBarDefaults.TopAppBarElevation,
         color = MaterialTheme.colors.topAppBarBackgroundColor
     ) {
-
-        Surface(
+        TextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(TOP_APP_BAR_HEIGHT),
-            elevation = AppBarDefaults.TopAppBarElevation,
-            color = MaterialTheme.colors.topAppBarBackgroundColor
-        ) {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = text,
-                onValueChange = onTextChange,
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.search_placeholder),
-                        color = Color.White,
-                        modifier = Modifier
-                            .alpha(ContentAlpha.medium)
+                .fillMaxWidth(),
+            value = text,
+            onValueChange = onTextChange,
+            placeholder = {
+                Text(
+                    text = stringResource(id = R.string.search_placeholder),
+                    color = Color.White,
+                    modifier = Modifier
+                        .alpha(ContentAlpha.medium)
 
-                    )
-                },
-                textStyle = TextStyle(
-                    color = MaterialTheme.colors.topAppBarContentColor,
-                    fontSize = MaterialTheme.typography.subtitle1.fontSize,
-                ),
-                singleLine = true,
-                leadingIcon = {
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .alpha(ContentAlpha.disabled)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Search Icon", //! transfer to strings.xml
-                            tint = MaterialTheme.colors.topAppBarContentColor
-                        )
-                    }
-                },
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            if (text.isNotEmpty()) {
-                                onTextChange("")
-                            } else {
-                                onCloseClicked()
-                            }
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = "Close Icon", //! transfer to strings.xml
-                            tint = MaterialTheme.colors.topAppBarContentColor
-                        )
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Search
-                ),
-                keyboardActions = KeyboardActions(
-                    onSearch = {
-                        onSearchClicked(text)
-                    }
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    cursorColor = MaterialTheme.colors.topAppBarContentColor,
-                    focusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    backgroundColor = Color.Transparent
                 )
+            },
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.topAppBarContentColor,
+                fontSize = MaterialTheme.typography.subtitle1.fontSize,
+            ),
+            singleLine = true,
+            leadingIcon = {
+                IconButton(
+                    onClick = {   },
+                    modifier = Modifier
+                        .alpha(ContentAlpha.disabled)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search Icon", //! transfer to strings.xml
+                        tint = MaterialTheme.colors.topAppBarContentColor
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+
+                        when(trialingIconState){
+                            TrialingIconState.READY_TO_DELETE -> {
+                                onTextChange("")
+                                trialingIconState = TrialingIconState.READY_TO_CLOSE
+                            }
+                            TrialingIconState.READY_TO_CLOSE -> {
+                                if (text.isNotEmpty()) {
+                                    onTextChange("")
+                                } else {
+                                    onCloseClicked()
+                                    trialingIconState = TrialingIconState.READY_TO_DELETE
+                                }
+                            }
+                        }
+
+
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Close Icon", //! transfer to strings.xml
+                        tint = MaterialTheme.colors.topAppBarContentColor
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearchClicked(text)
+                }
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                cursorColor = MaterialTheme.colors.topAppBarContentColor,
+                focusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                backgroundColor = Color.Transparent
             )
-        }
+        )
     }
 }
 

@@ -27,21 +27,24 @@ import com.example.tododash.ui.theme.PRIORITY_INDICATOR_SIZE
 import com.example.tododash.ui.theme.TASK_ITEM_ELEVATION
 import com.example.tododash.ui.theme.taskItemBackgroundColor
 import com.example.tododash.ui.theme.taskItemTextColor
+import com.example.tododash.util.RequestState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    allTasks: List<ToDoTask>,
+    allTasks: RequestState<List<ToDoTask>>,
     navigateToTaskScreen: (taskId: Int) -> Unit,
 ) {
-    if (allTasks.isEmpty()) {
-        EmptyContent()
-    } else {
-        DisplayTasks(
-            tasks = allTasks,
-            navigateToTaskScreen = navigateToTaskScreen
-        )
-    } 
+    if (allTasks is RequestState.Success) {
+        if (allTasks.data.isEmpty()) {
+            EmptyContent()
+        } else {
+            DisplayTasks(
+                tasks = allTasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+    }
 }
 
 @ExperimentalMaterialApi

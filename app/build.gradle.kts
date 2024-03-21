@@ -71,8 +71,10 @@ dependencies {
 
     //room
     implementation(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
