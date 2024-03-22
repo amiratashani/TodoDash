@@ -49,4 +49,14 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
     fun onSearchClicked(newSearchAppBarState: SearchAppBarState) {
         searchAppBarState.value = newSearchAppBarState
     }
+
+    private val _selectedTask: MutableStateFlow<ToDoTask?> = MutableStateFlow(null)
+    val selectTask: StateFlow<ToDoTask?> = _selectedTask
+    fun getSelectedTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getSelectedTask(taskId = taskId).collect {
+                _selectedTask.value = it
+            }
+        }
+    }
 }

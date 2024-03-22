@@ -9,4 +9,5 @@
     <string name="add_task">Add Task</string>
     <string name="list_screen_title">Task</string>
     <string name="search_placeholder">Search</string>
+    <string name="back_arrow">Back Arrow</string>
 </resources>
