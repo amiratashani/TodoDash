@@ -9,6 +9,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberScaffoldState
@@ -54,7 +55,8 @@ fun ListScreen(
         scaffoldState = scaffoldState,
         handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action) },
         taskTitle = sharedViewModel.title.value,
-        action = action
+        action = action,
+        onUndoClicked = {sharedViewModel.action.value = it}
     )
 
     Scaffold(
@@ -91,7 +93,7 @@ fun DisplaySnackBar(
     handleDatabaseActions: () -> Unit,
     taskTitle: String,
     action: Action,
-
+    onUndoClicked: (Action) -> Unit
     ) {
     //! May be improved. For now this function is triggered any time there is a
     //! recomposition of DisplaySnackBar composable. Ideally, it should be triggered
@@ -106,6 +108,11 @@ fun DisplaySnackBar(
                 val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = setMessage(action = action, taskTitle = taskTitle),
                     actionLabel = setActionLabel(action = action)
+                )
+                undoDeletedTask(
+                    action = action,
+                    snackBarResult = snackbarResult,
+                    onUndoClicked = onUndoClicked
                 )
             }
         }
@@ -127,6 +134,16 @@ private fun setActionLabel(action: Action): String {
         "UNDO"
     } else {
         "OK"
+    }
+}
+
+private fun undoDeletedTask(
+    action: Action,
+    snackBarResult: SnackbarResult,
+    onUndoClicked: (Action) -> Unit
+) {
+    if (snackBarResult == SnackbarResult.ActionPerformed && action == Action.DELETE) {
+        onUndoClicked(Action.UNDO)
     }
 }
 
