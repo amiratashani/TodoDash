@@ -11,4 +11,5 @@
     <string name="search_placeholder">Search</string>
     <string name="back_arrow">Back Arrow</string>
     <string name="drop_down_arrow_icon">Drop-Down Arrow Icon</string>
+    <string name="title">Title</string>
 </resources>

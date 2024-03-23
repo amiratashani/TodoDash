@@ -4,8 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tododash.data.models.Priority
 import com.example.tododash.data.models.ToDoTask
 import com.example.tododash.data.repositories.ToDoRepository
+import com.example.tododash.util.Constants
 import com.example.tododash.util.RequestState
 import com.example.tododash.util.SearchAppBarState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,48 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedViewModel @Inject constructor(private val repository: ToDoRepository) : ViewModel() {
+
+    // states
+    val id: MutableState<Int> = mutableStateOf(0)
+
+    val title: MutableState<String> = mutableStateOf("")
+
+    val description: MutableState<String> = mutableStateOf("")
+
+    val priority: MutableState<Priority> = mutableStateOf((Priority.LOW))
+
+    // events:
+
+    fun onTitleChange(newTitle: String) {
+        // limit the character count
+        if (newTitle.length < Constants.MAX_TITLE_LENGTH) {
+            title.value = newTitle
+        }
+    }
+
+    fun onDescriptionChange(newDescription: String) {
+        description.value = newDescription
+    }
+
+    fun onPrioritySelected(newPriority: Priority) {
+        priority.value = newPriority
+    }
+
+    fun updateTaskFields(selectedTask: ToDoTask?) {
+        if (selectedTask != null) {
+            id.value = selectedTask.id
+            title.value = selectedTask.title
+            description.value = selectedTask.description
+            priority.value = selectedTask.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
+        }
+    }
+
+
 
 
     // state: searchAppBarState
