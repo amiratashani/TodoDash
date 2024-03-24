@@ -130,12 +130,18 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
         }
     }
 
+    private fun deleteAllTasks() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllTasks()
+        }
+    }
+
     fun handleDatabaseActions(action: Action) {
         when (action) {
             Action.ADD -> addTask()
             Action.UPDATE -> updateTask()
             Action.DELETE -> deleteTask()
-//            Action.DELETE_ALL -> deleteAllTasks()
+            Action.DELETE_ALL -> deleteAllTasks()
             Action.UNDO -> addTask()
             else -> {
             }
@@ -157,7 +163,6 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
     }
 
     //--------------------------------------------------------------
-
 
 
     private val _searchedTasks =
@@ -194,6 +199,9 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
     var searchTextState: MutableState<String> = mutableStateOf("")
         private set
 
+    fun onSearchTextChanged(newText: String) {
+        searchTextState.value = newText
+    }
     fun onSearchClicked(newSearchAppBarState: SearchAppBarState) {
         searchAppBarState.value = newSearchAppBarState
     }

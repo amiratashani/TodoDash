@@ -39,6 +39,7 @@ import com.example.tododash.ui.theme.TOP_APP_BAR_HEIGHT
 import com.example.tododash.ui.theme.topAppBarBackgroundColor
 import com.example.tododash.ui.theme.topAppBarContentColor
 import com.example.tododash.ui.viewmodels.SharedViewModel
+import com.example.tododash.util.Action
 import com.example.tododash.util.SearchAppBarState
 import com.example.tododash.util.TrialingIconState
 
@@ -58,16 +59,18 @@ fun ListAppBar(
                     onSearchClicked(SearchAppBarState.OPENED)
                 },
                 onSortClicked ={},
-                onDeleteAllConfirmed = {}
+                onDeleteAllConfirmed = {
+                    sharedViewModel.action.value = Action.DELETE_ALL
+                }
             )
 
         else ->
             SearchAppBar(
                 text = searchTextState,
-                onTextChange = { newText -> sharedViewModel.searchTextState.value = newText },
+                onTextChange = { onTextChange(it) },
                 onCloseClicked = {
                     onSearchClicked(SearchAppBarState.CLOSED)
-                    sharedViewModel.searchTextState.value = ""
+                    onTextChange("")
                 },
                 onSearchClicked = {
                     sharedViewModel.searchDatabase(searchQuery = it)
@@ -263,7 +266,6 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-
                         when(trialingIconState){
                             TrialingIconState.READY_TO_DELETE -> {
                                 onTextChange("")

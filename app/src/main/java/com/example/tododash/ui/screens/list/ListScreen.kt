@@ -69,10 +69,13 @@ fun ListScreen(
             )
         },
         topBar = {
-            ListAppBar(sharedViewModel,
+            ListAppBar(
+                sharedViewModel,
                 searchAppBarState,
                 searchTextState,
-                sharedViewModel::onSearchClicked, {})
+                sharedViewModel::onSearchClicked,
+                sharedViewModel::onSearchTextChanged
+            )
         },
         floatingActionButton = { ListFab(navigateToTaskScreen) }
     )
