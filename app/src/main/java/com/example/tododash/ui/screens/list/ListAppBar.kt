@@ -32,6 +32,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tododash.R
+import com.example.tododash.component.DisplayAlertDialog
 import com.example.tododash.component.PriorityItem
 import com.example.tododash.data.models.Priority
 import com.example.tododash.ui.theme.LARGE_PADDING
@@ -58,7 +59,7 @@ fun ListAppBar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
                     onSearchClicked(SearchAppBarState.OPENED)
                 },
-                onSortClicked ={},
+                onSortClicked = {},
                 onDeleteAllConfirmed = {
                     sharedViewModel.action.value = Action.DELETE_ALL
                 }
@@ -110,9 +111,21 @@ fun ListAppBarActions(
     onDeleteAllConfirmed: () -> Unit
 ) {
 
+    var openDialog by remember { mutableStateOf(false) }
+
+    DisplayAlertDialog(title = stringResource(R.string.remove_all_tasks),
+        message = stringResource(R.string.remove_all_tasks_confirm),
+        openDialog = openDialog,
+        closeDialog = {
+            openDialog = false
+        }, onYesClicked = {
+            onDeleteAllConfirmed()
+        })
+
+
     SearchAction(onSearchClicked = onSearchClicked)
     SortAction(onSortClicked = onSortClicked)
-    DeleteAllAction(onDeleteAllConfirmed = onDeleteAllConfirmed)
+    DeleteAllAction(onDeleteAllConfirmed = { openDialog = true })
 }
 
 @Composable
@@ -252,7 +265,7 @@ fun SearchAppBar(
             singleLine = true,
             leadingIcon = {
                 IconButton(
-                    onClick = {   },
+                    onClick = { },
                     modifier = Modifier
                         .alpha(ContentAlpha.disabled)
                 ) {
@@ -266,11 +279,12 @@ fun SearchAppBar(
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        when(trialingIconState){
+                        when (trialingIconState) {
                             TrialingIconState.READY_TO_DELETE -> {
                                 onTextChange("")
                                 trialingIconState = TrialingIconState.READY_TO_CLOSE
                             }
+
                             TrialingIconState.READY_TO_CLOSE -> {
                                 if (text.isNotEmpty()) {
                                     onTextChange("")

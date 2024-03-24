@@ -125,8 +125,8 @@ fun ExistingTaskAppBarActions(
     var openDialog by remember { mutableStateOf(false) }
 
     DisplayAlertDialog(
-        title = "Remove ${selectedTask.title}?",
-        message = "Are you sure you want to remove ${selectedTask.title}?",
+        title = stringResource(R.string.delete_task, selectedTask.title),
+        message = stringResource(R.string.delete_task_confirm, selectedTask.title),
         openDialog = openDialog,
         closeDialog = { openDialog = false },
         onYesClicked = { navigateToListScreen(Action.DELETE) }

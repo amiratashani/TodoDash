@@ -6,7 +6,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import com.example.tododash.R
 
 @Composable
 fun DisplayAlertDialog(
@@ -39,13 +41,13 @@ fun DisplayAlertDialog(
                         closeDialog()
                     })
                 {
-                    Text(text = "Yes")
+                    Text(text = stringResource(R.string.yes))
                 }
             },
             dismissButton = {
                 OutlinedButton(onClick = { closeDialog() })
                 {
-                    Text(text = "No")
+                    Text(text = stringResource(R.string.no))
                 }
             },
             onDismissRequest = { closeDialog() }
