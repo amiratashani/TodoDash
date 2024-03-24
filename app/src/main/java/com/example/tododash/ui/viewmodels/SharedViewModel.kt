@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tododash.data.models.Priority
 import com.example.tododash.data.models.ToDoTask
+import com.example.tododash.data.repositories.DataStoreRepository
 import com.example.tododash.data.repositories.ToDoRepository
 import com.example.tododash.util.Action
 import com.example.tododash.util.Constants
@@ -19,7 +20,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedViewModel @Inject constructor(private val repository: ToDoRepository) : ViewModel() {
+class SharedViewModel @Inject constructor(
+    private val repository: ToDoRepository,
+    private val dataStoreRepository: DataStoreRepository
+) : ViewModel() {
 
     val action: MutableState<Action> = mutableStateOf(Action.NO_ACTION)
 
@@ -202,6 +206,7 @@ class SharedViewModel @Inject constructor(private val repository: ToDoRepository
     fun onSearchTextChanged(newText: String) {
         searchTextState.value = newText
     }
+
     fun onSearchClicked(newSearchAppBarState: SearchAppBarState) {
         searchAppBarState.value = newSearchAppBarState
     }
