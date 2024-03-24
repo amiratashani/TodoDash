@@ -13,7 +13,6 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberScaffoldState
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.tododash.R
 import com.example.tododash.ui.theme.fabBackgroundColor
 import com.example.tododash.ui.viewmodels.SharedViewModel
@@ -46,6 +44,7 @@ fun ListScreen(
     val action by sharedViewModel.action
 
     val allTasks by sharedViewModel.allTasks.collectAsState()
+    val searchedTask by sharedViewModel.searchedTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
     val searchTextState: String by sharedViewModel.searchTextState
 
@@ -56,12 +55,19 @@ fun ListScreen(
         handleDatabaseActions = { sharedViewModel.handleDatabaseActions(action) },
         taskTitle = sharedViewModel.title.value,
         action = action,
-        onUndoClicked = {sharedViewModel.action.value = it}
+        onUndoClicked = { sharedViewModel.action.value = it }
     )
 
     Scaffold(
         scaffoldState = scaffoldState,
-        content = { ListContent(allTasks = allTasks, navigateToTaskScreen = navigateToTaskScreen) },
+        content = {
+            ListContent(
+                allTasks = allTasks,
+                searchTasks = searchedTask,
+                searchAppBarState = searchAppBarState,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        },
         topBar = {
             ListAppBar(sharedViewModel,
                 searchAppBarState,
@@ -94,7 +100,7 @@ fun DisplaySnackBar(
     taskTitle: String,
     action: Action,
     onUndoClicked: (Action) -> Unit
-    ) {
+) {
     //! May be improved. For now this function is triggered any time there is a
     //! recomposition of DisplaySnackBar composable. Ideally, it should be triggered
     //! when there is a change in action by means of a LaunchedEffect with key1 = action

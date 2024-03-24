@@ -28,22 +28,50 @@ import com.example.tododash.ui.theme.TASK_ITEM_ELEVATION
 import com.example.tododash.ui.theme.taskItemBackgroundColor
 import com.example.tododash.ui.theme.taskItemTextColor
 import com.example.tododash.util.RequestState
+import com.example.tododash.util.SearchAppBarState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
     allTasks: RequestState<List<ToDoTask>>,
+    searchTasks: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskId: Int) -> Unit,
 ) {
-    if (allTasks is RequestState.Success) {
-        if (allTasks.data.isEmpty()) {
-            EmptyContent()
-        } else {
-            DisplayTasks(
+
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = searchTasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+
+    } else {
+        if (allTasks is RequestState.Success) {
+            HandleListContent(
                 tasks = allTasks.data,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         }
+    }
+
+}
+
+
+@ExperimentalMaterialApi
+@Composable
+fun HandleListContent(
+    tasks: List<ToDoTask>,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayTasks(
+            tasks = tasks,
+            navigateToTaskScreen = navigateToTaskScreen
+        )
     }
 }
 
