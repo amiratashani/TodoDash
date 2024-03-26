@@ -69,7 +69,7 @@ fun ListScreen(
         content = {
             ListContent(
                 allTasks = allTasks,
-                searchTasks = searchedTask,
+                searchedTasks = searchedTask,
                 lowPriorityTasks = lowPriorityTasks,
                 highPriorityTasks = highPriorityTasks,
                 sortState = sortState,
