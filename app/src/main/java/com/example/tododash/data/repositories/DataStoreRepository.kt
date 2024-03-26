@@ -34,13 +34,13 @@ class DataStoreRepository @Inject constructor(
 
     private val dataStore = context.dataStore
 
-    suspend fun persistStoreState(priority: Priority) {
+    suspend fun persistSortState(priority: Priority) {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.sortKey] = priority.name
         }
     }
 
-    fun readSortState(): Flow<String> = dataStore.data.catch { exception ->
+    val readSortState : Flow<String> = dataStore.data.catch { exception ->
         if (exception is IOException) {
             emit(emptyPreferences())
         } else {
